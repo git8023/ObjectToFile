@@ -1,9 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <conf >
-  <title  prop-name   = "属性名" 
-          text        = "列标题"
-          suffix      = "列后缀"
-          prefix      = "列前缀"
-          max-size    = "列值最大长度, 本列总长度 = suffix.length() + prefix.length() + max-size.length()"
+  <title  name      = "code" 
+          text      = "行业代码"
+          prefix    = ""
+          suffix    = "|"
+          size      = "4"
+          adder     = ""
+   />
+  <title  name      = "amount" 
+          text      = "总笔数"
+          prefix    = ""
+          suffix    = "|"
+          size      = "10"
+   />
+  <title  name      = "accruingAmounts" 
+          text      = "累计交易金额"
+          prefix    = ""
+          suffix    = "|"
+          size      = "16"
+   />
+  <title  name      = "fileCreatedDate" 
+          text      = "文件生成日期"
+          prefix    = ""
+          suffix    = "|"
+          formatter = "yyyyMMdd"
+          size      = "8"
+   />
+  <title  name      = "fileCreatedTime" 
+          text      = "文件生成时间"
+          prefix    = ""
+          formatter = "hhmmss"
+          suffix    = "|"
+          size      = "6"
+   />
+  <title  name      = "fileBatchNo" 
+          text      = "文件批次号"
+          prefix    = ""
+          suffix    = "|"
+          size      = "8"
+   />
+  <title  name      = "mac" 
+          text      = "mac"
+          prefix    = ""
+          suffix    = ";"
+          size      = "32"
    />
  </conf >

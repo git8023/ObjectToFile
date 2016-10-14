@@ -1,6 +1,10 @@
 package org.yong.commons.iface.text;
 
+import java.io.File;
+
 import org.yong.commons.iface.ObjectToFile;
+import org.yong.commons.iface.convertors.StringConvertor;
+import org.yong.commons.iface.listeners.TextListener;
 
 /**
  * @author Huang.Yong
@@ -23,8 +27,39 @@ public interface ObjectToText<T> extends ObjectToFile<T> {
      *   &lt;/conf &gt;
      * </pre>
      * 
-     * @param xmlConfFile XML配置文件路径
+     * @param xmlConfFile XML配置文件
      */
-    public void setXmlConfPath(String xmlConfFile);
+    public void setXmlConfPath(File xmlConfFile);
+
+    /**
+     * 对象转换为一行文本
+     * 
+     * @param bean 目标对象
+     * @return 一行文本字符串
+     */
+    public String convert(T bean);
+
+    /**
+     * 转换器注册
+     * 
+     * @param clazz 转换器类型
+     * @param convertor
+     */
+    <E> void registerConvertor(Class<E> clazz, StringConvertor<E> convertor);
+
+    /**
+     * 获取转换器
+     * 
+     * @param clazz 转换器类型
+     * @return 转换器
+     */
+    <E> StringConvertor<E> getConvertor(Class<?> clazz);
+
+    /**
+     * 注册监听器
+     * 
+     * @param listener 监听器
+     */
+    public void registerListener(TextListener<T> listener);
 
 }

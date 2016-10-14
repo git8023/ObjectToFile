@@ -1,7 +1,8 @@
 package org.yong.commons.iface;
 
 import java.io.File;
-import java.util.Collection;
+
+import org.yong.commons.exception.AccessException;
 
 /**
  * 对象转换为文件
@@ -12,17 +13,19 @@ import java.util.Collection;
 public interface ObjectToFile<T> {
 
     /**
-     * 设置文件路径
+     * 设置导出的文件路径
      * 
-     * @param absoluteFilePath 文件路径, 如果存在则覆盖
+     * @param file 文件路径, 如果存在则覆盖
      */
-    public void setFilePath(String absoluteFilePath);
+    public void setExportFilePath(String filePath);
 
     /**
      * 执行转换
      * 
-     * @param list 对象列表
+     * @param beans 对象列表
      * @return 转换后文件对象
+     * @throws AccessException 导出文件失败或其他错误时
      */
-    public File convert(Collection<T> list);
+    public File export(Iterable<T> beans) throws AccessException;
+
 }
