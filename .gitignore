@@ -1,0 +1,7 @@
+/target/
+
+.classpath
+*.project
+*.prefs
+.settings/org.eclipse.wst.common.component
+*.xml
