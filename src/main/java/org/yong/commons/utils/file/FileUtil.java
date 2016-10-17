@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
-import org.yong.commons.impl.ObjectToFileAbstractTest;
 
 /**
  * 文件工具
