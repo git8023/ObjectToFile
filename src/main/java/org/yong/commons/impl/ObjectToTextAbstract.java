@@ -27,11 +27,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
- * 对象转文本文件基础类
+ * 对象转文本文件基础类, 支持监听器实现 : <br>
+ * 对象数据转换前置处理(
+ * {@link org.yong.commons.iface.listeners.TextListener#beforeBeanConvert}) <br>
+ * 行文本追加前置处理(
+ * {@link org.yong.commons.iface.listeners.TextListener#beforeRowContentAppend}
+ * ),
  * 
  * @author Huang.Yong
  * @version 0.1
  * @param &lt;T&gt; 目标对象类型
+ * @see TextListener
  */
 public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
 
@@ -179,9 +185,8 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
             // 行数据处理前
             beforeBeanConvert(bean);
             String content = convert(bean);
-            // TODO 行数据处理后
+            // 行数据处理后
             content = beforeRowContentAppend(content, bean);
-            content = StringUtils.trimToEmpty(content);
             buffer.append(content).append(FileUtil.LINE_SEPARATOR);
             if (0 == dataRowCount % cachedRows) {
                 FileUtils.write(expFile, buffer, true);

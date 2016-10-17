@@ -18,7 +18,24 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
      * @version 0.1
      */
     public enum Attributable {
-        NAME, TEXT, SUFFIX, PREFIX, SIZE, FORMATTER;
+        /** 属性名 */
+        NAME,
+        /** 表头文本 */
+        TEXT,
+        /** 前缀 */
+        SUFFIX,
+        /** 后缀 */
+        PREFIX,
+        /** 属性值长度 */
+        SIZE,
+        /** 日期格式化 */
+        FORMATTER,
+        /** 右对齐方式 */
+        RIGHT_ALIGN {
+            public String getAttrName() {
+                return "rightAlign";
+            }
+        };
 
         /**
          * 获取配置属性名
@@ -45,6 +62,8 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
     private String value;
 
     private String formatter;
+
+    private boolean rightAlign;
 
     /**
      * 获取标题文本, 带前缀和后缀
@@ -193,6 +212,20 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
         this.formatter = formatter;
     }
 
+    /**
+     * @return the rightAlign
+     */
+    public boolean isRightAlign() {
+        return rightAlign;
+    }
+
+    /**
+     * @param rightAlign the rightAlign to set
+     */
+    public void setRightAlign(boolean rightAlign) {
+        this.rightAlign = rightAlign;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -201,7 +234,8 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
     @Override
     public String toString() {
         return "AttributeConfigure [name=" + name + ", text=" + text + ", suffix=" + suffix + ", prefix=" + prefix + ", size="
-                + size + ", ordinal=" + ordinal + ", value=" + value + ", formatter=" + formatter + "]";
+                + size + ", ordinal=" + ordinal + ", value=" + value + ", formatter=" + formatter + ", rightAlign=" + rightAlign
+                + "]";
     }
 
 }

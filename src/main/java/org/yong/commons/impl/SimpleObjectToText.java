@@ -8,17 +8,77 @@ import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 import org.yong.commons.component.AttributeConfigure;
 import org.yong.commons.iface.convertors.StringConvertor;
+import org.yong.commons.iface.listeners.TextListener;
 
+/**
+ * 简单实现对象文本转换器, 支持监听器实现:
+ * <ol>
+ * <li>列数据转换前({@link TextListener#beforeColumnConvert})</li>
+ * <li>列数据追加前({@link TextListener#beforeColumnAppend})</li>
+ * </ol>
+ * 
+ * <pre>
+ * <b>程序代码示例</b>
+ * // 获取打印对象
+ * String exportFilePath = &quot;d:/test.txt&quot;;
+ * File fileFromClassPath = getFileFromClassPath(&quot;/conf.xml&quot;);
+ * ObjectToText&lt;TestEntity&gt; objectToText = new SimpleObjectToText&lt;TestEntity&gt;(exportFilePath, fileFromClassPath);
+ * 
+ * // 注册监听器
+ * objectToText.registerListener(new TextListenerAdapter&lt;TestEntity&gt;() {
+ *     &#064;Override
+ *     public String beforeColumnAppend(String name, String val, String content) {
+ *         if (&quot;mac&quot;.equals(name))
+ *             return MD5Helper.encode(content);
+ *         return val;
+ *     }
+ * });
+ * 
+ * // 打印文件
+ * Collection&lt;TestEntity&gt; list = getDataList();
+ * File export = objectToText.export(list);
+ * </pre>
+ * 
+ * <pre>
+ * <b>XML配置</b>
+ * &lt;conf >
+ *   &lt;title  
+ *           name      = "code"         属性名
+ *           text      = "Code"         文本第一行展示的标题
+ *           prefix    = ""             数据行前缀
+ *           suffix    = "|"            数据行后缀
+ *           size      = "4"            数据最大长度, 总长度=prefix.length+suffix.length+length, 
+ *                                      如果code.length&lt;size设置空格后缀. <b>属性值包含非ASCII码时, 
+ *                                      总长度=总长度+NON-ASC.length</b>
+ *           formatter = "yyyyMMdd"     日期格式化规则
+ *    />
+ *    ...
+ * &lt;/conf >
+ * </pre>
+ * 
+ * @author Huang.Yong
+ * @version 0.1
+ * @param &lt;T&gt; 实体对象类型
+ * @see TextListener
+ */
 public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
 
     public SimpleObjectToText() {
         super();
     }
 
+    /**
+     * @param exportFilePath 导出文件路径
+     * @param xmlConf XML配置文件
+     */
     public SimpleObjectToText(String exportFilePath, File xmlConf) {
         super(exportFilePath, xmlConf);
     }
 
+    /**
+     * @param exportFilePath 导出文件路径
+     * @param xmlConfPath XML配置文件路径
+     */
     public SimpleObjectToText(String exportFilePath, String xmlConfPath) {
         super(exportFilePath, xmlConfPath);
     }
@@ -83,14 +143,25 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
         int otherCharLen = conf.getOtherCharSize();
         size += otherCharLen;
 
+        StringBuilder buffer = new StringBuilder(sVal);
         int offset = size - valLen;
-        if (0 < offset) {
-            StringBuilder buffer = new StringBuilder(sVal);
-            while (--offset >= 0)
-                buffer.append(" ");
-            return buffer.toString();
-        }
+        CharSequence offsetSpace = createOffsetSpace(offset);
+        buffer = conf.isRightAlign() ? buffer.insert(0, offsetSpace) : buffer.append(offsetSpace);
+        return buffer.toString();
+    }
 
-        return sVal;
+    /**
+     * 创建补偿空白字符
+     * 
+     * @param offset 字符串长度
+     * @return 补偿字符串
+     */
+    private CharSequence createOffsetSpace(int offset) {
+        if (0 > offset)
+            offset = 0;
+        StringBuilder buffer = new StringBuilder();
+        while (--offset >= 0)
+            buffer.append(" ");
+        return buffer;
     }
 }

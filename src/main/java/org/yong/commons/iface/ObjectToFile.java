@@ -15,7 +15,7 @@ public interface ObjectToFile<T> {
     /**
      * 设置导出的文件路径
      * 
-     * @param file 文件路径, 如果存在则覆盖
+     * @param filePath 文件路径, 如果存在则覆盖
      */
     public void setExportFilePath(String filePath);
 

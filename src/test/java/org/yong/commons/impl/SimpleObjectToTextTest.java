@@ -3,8 +3,6 @@ package org.yong.commons.impl;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -41,9 +39,12 @@ public class SimpleObjectToTextTest {
 
     @Test
     public void testExport() throws Exception {
-        ObjectToText<TestEntity> objectToText = new SimpleObjectToText<TestEntity>("d:/test.txt",
-                getFileFromClassPath("/conf.xml"));
-        Collection<TestEntity> list = createOrders();
+        // 获取打印对象
+        String exportFilePath = "d:/test.txt";
+        File fileFromClassPath = getFileFromClassPath("/conf.xml");
+        ObjectToText<TestEntity> objectToText = new SimpleObjectToText<TestEntity>(exportFilePath, fileFromClassPath);
+
+        // 注册监听器
         objectToText.registerListener(new TextListenerAdapter<TestEntity>() {
             @Override
             public String beforeColumnAppend(String name, String val, String content) {
@@ -52,11 +53,14 @@ public class SimpleObjectToTextTest {
                 return val;
             }
         });
+
+        // 打印文件
+        Collection<TestEntity> list = getDataList();
         File export = objectToText.export(list);
         System.out.println(export.getAbsolutePath());
     }
 
-    private Collection<TestEntity> createOrders() {
+    private Collection<TestEntity> getDataList() {
         List<TestEntity> list = Lists.newArrayList();
 
         Random r = new Random();

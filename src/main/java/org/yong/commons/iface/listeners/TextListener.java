@@ -1,7 +1,13 @@
 package org.yong.commons.iface.listeners;
 
 /**
- * 文本转换监听器
+ * 文本转换监听器, 支持监听处理:
+ * <ol>
+ * <li>{@linkplain #beforeColumnConvert 列数据前置处理}</li>
+ * <li>{@linkplain #beforeColumnAppend 列值添加追加前置处理器}</li>
+ * <li>{@linkplain #beforeBeanConvert 对象转换前置处理器}</li>
+ * <li>{@linkplain #beforeRowContentAppend 对象数据添加前置处理器}</li>
+ * </ol>
  * 
  * @author Huang.Yong
  * @version 0.1
@@ -20,6 +26,16 @@ public interface TextListener<T> extends Listener<T> {
     Object beforeColumnConvert(String name, Object propVal, int ordinal);
 
     /**
+     * 列值添加追加前置处理器
+     * 
+     * @param name 属性名
+     * @param val 列值
+     * @param content 本行已追加列值
+     * @return 本列列值
+     */
+    String beforeColumnAppend(String name, String val, String content);
+
+    /**
      * 对象转换前置处理器
      * 
      * @param bean 目标对象
@@ -34,14 +50,4 @@ public interface TextListener<T> extends Listener<T> {
      * @return 处理后行数据文本
      */
     public String beforeRowContentAppend(String content, T bean);
-
-    /**
-     * 列值添加追加潜质处理器
-     * 
-     * @param name 属性名
-     * @param val 列值
-     * @param content 本行已追加列值
-     * @return 本列列值
-     */
-    String beforeColumnAppend(String name, String val, String content);
 }

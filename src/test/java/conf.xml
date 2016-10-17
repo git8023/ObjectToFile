@@ -12,6 +12,7 @@
           prefix    = ""
           suffix    = "|"
           size      = "10"
+          rightAlign= "true"
    />
   <title  name      = "accruingAmounts" 
           text      = "累计交易金额"
