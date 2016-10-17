@@ -27,14 +27,17 @@ public abstract class FileUtil {
      */
     public static File getFileFromClassPath(String fileName) {
         Class<?> clazz = FileUtil.class;
-        URL url = clazz.getResource(fileName);
-        if (null == url) {
-            return null;
-        }
+        URL url = clazz.getClassLoader().getResource("");
 
         try {
             URI uri = url.toURI();
-            File file = new File(uri);
+            File classPathDir = new File(uri);
+            File file = new File(classPathDir, fileName);
+            if (!file.exists()) {
+                File parentFile = file.getParentFile();
+                if (!file.exists())
+                    parentFile.mkdirs();
+            }
             return file;
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
