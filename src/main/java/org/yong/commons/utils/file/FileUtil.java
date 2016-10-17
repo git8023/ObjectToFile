@@ -26,9 +26,7 @@ public abstract class FileUtil {
      * @return 指定文件
      */
     public static File getFileFromClassPath(String fileName) {
-        Class<?> clazz = FileUtil.class;
-        URL url = clazz.getClassLoader().getResource("");
-
+        URL url = Thread.currentThread().getContextClassLoader().getResource("");
         try {
             URI uri = url.toURI();
             File classPathDir = new File(uri);
