@@ -27,7 +27,7 @@ public abstract class FileUtil {
      * @return 指定文件
      */
     public static File getFileFromClassPath(String fileName) {
-        Class<?> clazz = ObjectToFileAbstractTest.class;
+        Class<?> clazz = FileUtil.class;
         URL url = clazz.getResource(fileName);
         if (null == url) {
             return null;
