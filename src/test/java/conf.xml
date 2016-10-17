@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<conf >
+<conf showTitle="false" append="false">
   <title  name      = "code" 
           text      = "行业代码"
           prefix    = ""
           suffix    = "|"
           size      = "4"
           adder     = ""
+          hasTitle  = "false"
    />
   <title  name      = "amount" 
           text      = "总笔数"

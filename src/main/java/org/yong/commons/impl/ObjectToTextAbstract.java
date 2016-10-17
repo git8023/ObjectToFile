@@ -43,7 +43,7 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
 
     private XMLObject root;
 
-    private final List<AttributeConfigure> cellsConfig = Lists.newArrayList();
+    private final List<AttributeConfigure> CELLS_CONFIG = Lists.newArrayList();
 
     private String exportFilePath;
 
@@ -52,6 +52,12 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
     private TextListener<T> listener;
 
     private static final StringConverterMap converterMap = new StringConverterMap();
+
+    /** true-打印首行标题 */
+    private boolean showTitle;
+
+    /** true-追加内容, false-覆盖内容 */
+    private Boolean appendContent;
 
     public ObjectToTextAbstract() {
         this((String) null, (String) null);
@@ -111,15 +117,26 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
      */
     private void parseXMLConf() {
         List<XMLObject> titles = root.getChildTags("title");
+        parseRootConf(root);
         for (int i = 0, len = titles.size(); i < len; i++) {
             XMLObject xmlTitleConfig = titles.get(i);
             AttributeConfigure conf = parseTitleConfig(xmlTitleConfig);
 
             if (null != conf) {
                 conf.setOrdinal(i);
-                this.cellsConfig.add(conf);
+                this.CELLS_CONFIG.add(conf);
             }
         }
+    }
+
+    /**
+     * 初始化标记
+     * 
+     * @param xmlRoot XML根配置
+     */
+    private void parseRootConf(XMLObject xmlRoot) {
+        this.showTitle = Boolean.valueOf(xmlRoot.getAttr("showTitle"));
+        this.appendContent = Boolean.valueOf(xmlRoot.getAttr("append"));
     }
 
     /**
@@ -154,14 +171,15 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
      * @return 属性配置列表
      */
     protected List<AttributeConfigure> getCellsConfig() {
-        return cellsConfig;
+        return CELLS_CONFIG;
     }
 
     @Override
     public File export(Iterable<T> beans) throws AccessException {
-        File expFile = new File(this.exportFilePath);
+        File expFile = FileUtil.createQuietly(this.exportFilePath, this.appendContent);
         try {
-            writeTitle(expFile);
+            if (this.showTitle)
+                writeTitle(expFile);
             writeRows(expFile, beans);
         } catch (Exception e) {
             throw new AccessException("Export file error", e);
@@ -207,11 +225,11 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
      */
     private void writeTitle(File expFile) throws IOException {
         StringBuilder sb = new StringBuilder();
-        for (AttributeConfigure attrConf : cellsConfig) {
+        for (AttributeConfigure attrConf : CELLS_CONFIG) {
             sb.append(attrConf.getTitleText());
         }
         sb.append(FileUtil.LINE_SEPARATOR);
-        FileUtils.write(expFile, sb.toString());
+        FileUtils.write(expFile, sb.toString(), true);
     }
 
     @Override

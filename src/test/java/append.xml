@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conf showTitle="false" append="true">
+  <title  name      = "code" 
+          text      = "行业代码"
+          prefix    = ""
+          suffix    = "|"
+          size      = "12"
+          adder     = ""
+          hasTitle  = "false"
+   />
+  <title  name      = "fileCreatedDate" 
+          text      = "文件生成日期"
+          prefix    = ""
+          suffix    = "|"
+          formatter = "yyyy-MM-dd hh:mm:ss"
+          size      = "20"
+   />
+  <title  name      = "mac" 
+          text      = "mac"
+          prefix    = ""
+          suffix    = ";"
+          size      = "32"
+   />
+ </conf >

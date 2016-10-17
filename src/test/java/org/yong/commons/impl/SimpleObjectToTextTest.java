@@ -43,7 +43,6 @@ public class SimpleObjectToTextTest {
         String exportFilePath = "d:/test.txt";
         File fileFromClassPath = getFileFromClassPath("/conf.xml");
         ObjectToText<TestEntity> objectToText = new SimpleObjectToText<TestEntity>(exportFilePath, fileFromClassPath);
-
         // 注册监听器
         objectToText.registerListener(new TextListenerAdapter<TestEntity>() {
             @Override
@@ -53,18 +52,36 @@ public class SimpleObjectToTextTest {
                 return val;
             }
         });
-
         // 打印文件
-        Collection<TestEntity> list = getDataList();
+        Collection<TestEntity> list = getDataList(1);
         File export = objectToText.export(list);
-        System.out.println(export.getAbsolutePath());
+        System.out.println("total : " + export);
+
+        // 获取打印对象
+        String exportFilePath1 = "d:/test.txt";
+        File fileFromClassPath1 = getFileFromClassPath("/append.xml");
+        ObjectToText<TestEntity> objectToText1 = new SimpleObjectToText<TestEntity>(exportFilePath1, fileFromClassPath1);
+        // 注册监听器
+        objectToText1.registerListener(new TextListenerAdapter<TestEntity>() {
+            @Override
+            public String beforeColumnAppend(String name, String val, String content) {
+                if ("mac".equals(name))
+                    return MD5Helper.encode(content);
+                return val;
+            }
+        });
+        // 打印文件
+        Collection<TestEntity> list1 = getDataList(5);
+        File export1 = objectToText1.export(list1);
+
+        System.out.println("details : " + export1.getAbsolutePath());
     }
 
-    private Collection<TestEntity> getDataList() {
+    private Collection<TestEntity> getDataList(int size) {
         List<TestEntity> list = Lists.newArrayList();
 
         Random r = new Random();
-        for (int i = 0, len = 10; i < len; i++) {
+        for (; size > 0; size--) {
             TestEntity order = new TestEntity("001", r.nextInt(100), r.nextInt(), new Date(), new Date(),
                     "FB-00" + r.nextInt(10), "xxxxxx");
             list.add(order);
