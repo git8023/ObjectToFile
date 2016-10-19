@@ -24,7 +24,7 @@ public class SimpleObjectToTextTest {
 
     private static File getFileFromClassPath(String fileName) {
         try {
-            Class<?> clazz = ObjectToFileAbstractTest.class;
+            Class<?> clazz = SimpleObjectToTextTest.class;
             URL url = clazz.getResource(fileName);
             URI uri = url.toURI();
             File file = new File(uri);
