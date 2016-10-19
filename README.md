@@ -1,7 +1,7 @@
 # XML Configuration File
   * 通过XML配置设置文本顺序和长度   
   ```xml
-  <!-- root label -->
+  <!-- 单结构配置 -->
   <conf showTitle="false" append="false" >
       <title  name          = "code" 
               text          = "行业代码"
@@ -12,7 +12,37 @@
               formatter     = "yyyyMMdd"
               size          = "8"
        />
-     </conf >
+     </conf>
+     
+  <!-- 多结构配置 -->
+  <types>
+       <conf showTitle="false" append="true" beanClass="test.entities.TestEntity">
+         <title  name      = "code" 
+                 text      = "行业代码"
+                 prefix    = ""
+                 suffix    = "|"
+                 size      = "4"
+                 hasTitle  = "false"
+          />
+         <title  name      = "amount" 
+                 text      = "总笔数"
+                 prefix    = ""
+                 suffix    = "|"
+                 size      = "10"
+                 rightAlign= "false"
+          />
+       </conf >
+       <conf showTitle="false" append="true" beanClass="test.entities.TestEntity2">
+         <title  name      = "code" 
+                 text      = "行业代码"
+                 prefix    = ""
+                 suffix    = "|"
+                 size      = "12"
+                 hasTitle  = "false"
+                 rightAlign= "false"
+         />
+      </conf >
+  </types>
   ```
 # 打印文本文件
   ```java
