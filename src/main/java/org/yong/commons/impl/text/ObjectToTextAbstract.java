@@ -1,4 +1,4 @@
-package org.yong.commons.impl;
+package org.yong.commons.impl.text;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,7 @@ import org.yong.commons.component.AttributeConfigure;
 import org.yong.commons.component.AttributeConfigure.Attributable;
 import org.yong.commons.component.StringConverterMap;
 import org.yong.commons.exception.AccessException;
+import org.yong.commons.iface.convertors.PrimerConvertor;
 import org.yong.commons.iface.convertors.StringConvertor;
 import org.yong.commons.iface.listeners.TextListener;
 import org.yong.commons.iface.text.ObjectToText;
@@ -52,6 +54,41 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
     private TextListener<T> listener;
 
     private static final StringConverterMap converterMap = new StringConverterMap();
+    static {
+        registerPrimerConvertor(Integer.class, int.class);
+        registerPrimerConvertor(Short.class, short.class);
+        registerPrimerConvertor(Long.class, long.class);
+        registerPrimerConvertor(Float.class, float.class);
+        registerPrimerConvertor(Double.class, double.class);
+        registerPrimerConvertor(Byte.class, byte.class);
+        registerPrimerConvertor(Character.class, char.class);
+        registerPrimerConvertor(Boolean.class, boolean.class);
+    }
+
+    /**
+     * 注册基础数据类型转换器
+     * 
+     * @param boxClass 装箱类型
+     * @param primerClass 拆箱类型
+     */
+    private static <T, E> void registerPrimerConvertor(Class<T> boxClass, Class<E> primerClass) {
+        final StringConvertor<T> mainConvertor = PrimerConvertor.newInstance(boxClass);
+        converterMap.put(boxClass, mainConvertor);
+        converterMap.put(primerClass, new StringConvertor<E>() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public String convertString(E t, AttributeConfigure conf) {
+                return mainConvertor.convertString((T) t, conf);
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public E convertTarget(String str, AttributeConfigure conf) {
+                return (E) mainConvertor.convertTarget(str, conf);
+            }
+        });
+    }
 
     /** true-打印首行标题 */
     private boolean showTitle;
@@ -61,6 +98,16 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
 
     public ObjectToTextAbstract() {
         this((String) null, (String) null);
+    }
+
+    /**
+     * @param xmlConf XML配置文件
+     */
+    public ObjectToTextAbstract(File xmlConf) {
+        super();
+        this.xmlConf = xmlConf;
+        setXmlConfPath(this.xmlConf);
+        registerConvertors();
     }
 
     /**
@@ -76,12 +123,9 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
      * @param xmlConf XML配置文件
      */
     public ObjectToTextAbstract(String exportFilePath, File xmlConf) {
-        super();
+        this(xmlConf);
         this.exportFilePath = exportFilePath;
-        this.xmlConf = xmlConf;
         setExportFilePath(exportFilePath);
-        setXmlConfPath(this.xmlConf);
-        registerConvertors();
     }
 
     /**
@@ -170,8 +214,20 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
      * 
      * @return 属性配置列表
      */
-    protected List<AttributeConfigure> getCellsConfig() {
+    protected List<AttributeConfigure> getCellsConfigList() {
         return CELLS_CONFIG;
+    }
+
+    /**
+     * 获取属性配置映射
+     * 
+     * @return 属性配置映射
+     */
+    protected Map<String, AttributeConfigure> createCellsConfigMap() {
+        Map<String, AttributeConfigure> map = Maps.newHashMap();
+        for (AttributeConfigure conf : CELLS_CONFIG)
+            map.put(conf.getName(), conf);
+        return map;
     }
 
     @Override
@@ -297,4 +353,66 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
             return this.listener.beforeRowContentAppend(content, bean);
         return content;
     }
+
+    @Override
+    public List<T> parse(Class<T> clazz, File src) throws AccessException {
+        if (!(null != src && src.exists()))
+            throw new AccessException("Invalid source file.");
+
+        if (null == this.root)
+            throw new AccessException("Missing XML configuration file.");
+
+        if (null == this.CELLS_CONFIG)
+            throw new AccessException("Invalid XML configuration file.");
+
+        try {
+            return parseFileToBeans(clazz, src);
+        } catch (Exception e) {
+            throw new AccessException(e);
+        }
+    }
+
+    /**
+     * 解析文件
+     * 
+     * @param src 源文件
+     * @return 对象列表
+     * @param clazz 对象字节码
+     * @throws IOException
+     */
+    private List<T> parseFileToBeans(Class<T> clazz, File src) throws IOException {
+        List<T> beans = Lists.newArrayList();
+
+        List<String> rowDatas = FileUtils.readLines(src);
+        if (CollectionUtils.isEmpty(rowDatas))
+            return beans;
+
+        for (String rowData : rowDatas) {
+            T bean = convert(clazz, rowData);
+            if (true == afterTextConverted(bean, rowData))
+                beans.add(bean);
+        }
+        return beans;
+    }
+
+    /**
+     * 文本数据转换成对象后
+     * 
+     * @param bean 目标对象
+     * @param textData 文本数据
+     * @return true-保存到列表中, false-跳过当前对象
+     */
+    private boolean afterTextConverted(T bean, String textData) {
+        return (null == this.listener) ? true : this.listener.afterTextConverted(bean, textData);
+    }
+
+    /**
+     * 是否展示表头
+     * 
+     * @return the showTitle
+     */
+    protected boolean isShowTitle() {
+        return showTitle;
+    }
+
 }

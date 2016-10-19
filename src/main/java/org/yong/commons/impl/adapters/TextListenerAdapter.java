@@ -29,4 +29,9 @@ public class TextListenerAdapter<T> implements TextListener<T> {
         return content;
     }
 
+    @Override
+    public boolean afterTextConverted(T bean, String textData) {
+        return true;
+    }
+
 }

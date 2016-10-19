@@ -1,14 +1,20 @@
-package org.yong.commons.impl;
+package org.yong.commons.impl.text;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 import org.yong.commons.component.AttributeConfigure;
+import org.yong.commons.exception.AccessException;
 import org.yong.commons.iface.convertors.StringConvertor;
 import org.yong.commons.iface.listeners.TextListener;
+import org.yong.util.string.StringUtil;
+
+import com.google.common.collect.Maps;
 
 /**
  * 简单实现对象文本转换器, 支持监听器实现:
@@ -68,6 +74,13 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
     }
 
     /**
+     * @param xmlConf XML配置文件
+     */
+    public SimpleObjectToText(File xmlConf) {
+        super(xmlConf);
+    }
+
+    /**
      * @param exportFilePath 导出文件路径
      * @param xmlConf XML配置文件
      */
@@ -85,7 +98,7 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
 
     @Override
     public String convert(T bean) {
-        List<AttributeConfigure> cellConfs = this.getCellsConfig();
+        List<AttributeConfigure> cellConfs = this.getCellsConfigList();
         PropertyUtilsBean propertyUtils = BeanUtilsBean2.getInstance().getPropertyUtils();
 
         StringBuilder buffer = new StringBuilder();
@@ -140,8 +153,10 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
         int valLen = sVal.length();
 
         int size = conf.getSize();
-        int otherCharLen = conf.getOtherCharSize();
-        size += otherCharLen;
+        if (isShowTitle()) {
+            int otherCharLen = conf.getOtherCharSize();
+            size += otherCharLen;
+        }
 
         StringBuilder buffer = new StringBuilder(sVal);
         int offset = size - valLen;
@@ -163,5 +178,69 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
         while (--offset >= 0)
             buffer.append(" ");
         return buffer;
+    }
+
+    @Override
+    public T convert(Class<T> clazz, String src) throws AccessException {
+        Map<String, String> attrs = Maps.newHashMap();
+        List<AttributeConfigure> attrConfs = getCellsConfigList();
+        int begin = 0;
+        for (AttributeConfigure conf : attrConfs) {
+            String name = conf.getName();
+            int cellLen = conf.getRealLength();
+            int end = begin + cellLen;
+
+            String val = substring(src, begin, end, true);
+            val = conf.getRealValue(val);
+            attrs.put(name, StringUtils.trimToEmpty(val));
+
+            begin += cellLen;
+        }
+
+        return createInstance(clazz, attrs);
+    }
+
+    /**
+     * 截取字符串
+     * 
+     * @param src 源
+     * @param beginIndex 开始下标(包含)
+     * @param endIndex 结束下标(不包含)
+     * @param useEmpty true-源无效或截取长度无效时返回空字符串, false-返回null
+     * @return 子字符串
+     */
+    private String substring(String src, int beginIndex, int endIndex, boolean useEmpty) {
+        String srcStr = StringUtils.trimToEmpty(src);
+        String subStr = StringUtils.substring(srcStr, beginIndex, endIndex);
+        return (StringUtil.isEmpty(subStr, true) && useEmpty) ? StringUtils.EMPTY : subStr;
+    }
+
+    /**
+     * 创建对象实例
+     * 
+     * @param clazz 对象字节码
+     * @param attrs 属性集合
+     * @return 包含属性集合的对象字节码
+     */
+    private T createInstance(Class<T> clazz, Map<String, String> attrs) {
+        PropertyUtilsBean propertyUtils = BeanUtilsBean2.getInstance().getPropertyUtils();
+        try {
+            T bean = clazz.newInstance();
+            Map<String, AttributeConfigure> configMap = createCellsConfigMap();
+            for (Entry<String, String> me : attrs.entrySet()) {
+                String name = me.getKey();
+                Class<?> type = propertyUtils.getPropertyType(bean, name);
+
+                Object val = me.getValue();
+                StringConvertor<?> convertor = getConvertor(type);
+                if (null != convertor)
+                    val = convertor.convertTarget((String) val, configMap.get(name));
+
+                propertyUtils.setProperty(bean, name, val);
+            }
+            return bean;
+        } catch (Exception e) {
+            throw new AccessException("Create bean instance error, " + e.getMessage(), e);
+        }
     }
 }

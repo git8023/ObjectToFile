@@ -1,7 +1,11 @@
 package org.yong.commons.component;
 
+import java.io.File;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 对象属性配置类
@@ -46,6 +50,30 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
             return this.name().toLowerCase();
         }
     };
+
+    /**
+     * 长度集合
+     * 
+     * @author Huang.Yong
+     * @version 0.1
+     */
+    private class Sizes {
+        private int preLen;
+
+        private int size;
+
+        private int sufLen;
+
+        public Sizes(int preLen, int size, int sufLen) {
+            super();
+            this.preLen = preLen;
+            this.size = size;
+            this.sufLen = sufLen;
+        }
+
+    }
+
+    private Sizes sizes;
 
     private String name;
 
@@ -111,7 +139,7 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
      * @param name the name to set
      */
     public void setName(String name) {
-        this.name = name;
+        this.name = StringUtils.trim(name);
     }
 
     /**
@@ -238,4 +266,50 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
                 + "]";
     }
 
+    /**
+     * 获取单元格真实长度
+     * 
+     * @return 长度
+     */
+    public int getRealLength() {
+        Sizes currSizes = getSizes();
+        return currSizes.preLen + currSizes.size + currSizes.sufLen;
+    }
+
+    /**
+     * 获取长度集
+     * 
+     * @return 长度集
+     */
+    private Sizes getSizes() {
+        if (null == this.sizes) {
+            int preLen = StringUtils.trimToEmpty(this.getPrefix()).length();
+            int size = this.getSize();
+            int sufLen = StringUtils.trimToEmpty(this.getSuffix()).length();
+            this.sizes = new Sizes(preLen, size, sufLen);
+        }
+        return this.sizes;
+    }
+
+    /**
+     * 获取真实值
+     * 
+     * @param origVal 文本原始值
+     * @return 真实值
+     */
+    public String getRealValue(String origVal) {
+        Sizes currSizes = getSizes();
+        return origVal.substring(currSizes.preLen, origVal.length() - currSizes.sufLen);
+    }
+
+    /**
+     * 解析配置文件
+     * 
+     * @param xmlFile 配置文件
+     * @return 属性配置列表
+     */
+    public static List<AttributeConfigure> parseConfig(File xmlFile) {
+        // TODO
+        return null;
+    }
 }

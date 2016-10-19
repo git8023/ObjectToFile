@@ -24,7 +24,8 @@ public interface StringConvertor<T> {
      * 字符串转换为目标类型
      * 
      * @param str 字符串
+     * @param conf 属性配置
      * @return 目标类型值
      */
-    public T convertTarget(String str);
+    public T convertTarget(String str, AttributeConfigure conf);
 }

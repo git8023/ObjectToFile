@@ -32,8 +32,11 @@ public class StringConverterMap {
      * 
      * @param clazz 转换器字节码
      * @param convertor 转换器
+     * @return 上一个转换器, 如果没有返回null
      */
-    public <T> void put(Class<T> clazz, StringConvertor<T> convertor) {
-        CONVERTERS.put(clazz, convertor);
+    public <T> StringConvertor<T> put(Class<T> clazz, StringConvertor<T> convertor) {
+        @SuppressWarnings("unchecked")
+        StringConvertor<T> oldConvertor = (StringConvertor<T>) CONVERTERS.put(clazz, convertor);
+        return oldConvertor;
     }
 }

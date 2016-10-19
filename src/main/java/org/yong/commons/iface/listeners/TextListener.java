@@ -23,7 +23,7 @@ public interface TextListener<T> extends Listener<T> {
      * @param ordinal 配置中的序列
      * @return 处理后列值
      */
-    Object beforeColumnConvert(String name, Object propVal, int ordinal);
+    public Object beforeColumnConvert(String name, Object propVal, int ordinal);
 
     /**
      * 列值添加追加前置处理器
@@ -33,7 +33,7 @@ public interface TextListener<T> extends Listener<T> {
      * @param content 本行已追加列值
      * @return 本列列值
      */
-    String beforeColumnAppend(String name, String val, String content);
+    public String beforeColumnAppend(String name, String val, String content);
 
     /**
      * 对象转换前置处理器
@@ -50,4 +50,13 @@ public interface TextListener<T> extends Listener<T> {
      * @return 处理后行数据文本
      */
     public String beforeRowContentAppend(String content, T bean);
+
+    /**
+     * 文本数据转换成对象后
+     * 
+     * @param bean 目标对象
+     * @param textData 文本数据
+     * @return true-保存到列表中, false-跳过当前对象
+     */
+    public boolean afterTextConverted(T bean, String textData);
 }

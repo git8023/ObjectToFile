@@ -2,6 +2,7 @@ package org.yong.commons.iface.text;
 
 import java.io.File;
 
+import org.yong.commons.exception.AccessException;
 import org.yong.commons.iface.ObjectToFile;
 import org.yong.commons.iface.convertors.StringConvertor;
 import org.yong.commons.iface.listeners.TextListener;
@@ -32,12 +33,21 @@ public interface ObjectToText<T> extends ObjectToFile<T> {
     public void setXmlConfPath(File xmlConfFile);
 
     /**
-     * 对象转换为一行文本
+     * 对象转换为文本
      * 
      * @param bean 目标对象
      * @return 一行文本字符串
      */
-    public String convert(T bean);
+    public String convert(T bean) throws AccessException;
+
+    /**
+     * 文本数据转换为对象
+     * 
+     * @param clazz 对象字节码
+     * @param src 文本数据
+     * @return 对象
+     */
+    public T convert(Class<T> clazz, String src) throws AccessException;
 
     /**
      * 转换器注册

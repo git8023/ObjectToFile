@@ -1,6 +1,7 @@
 package org.yong.commons.iface;
 
 import java.io.File;
+import java.util.List;
 
 import org.yong.commons.exception.AccessException;
 
@@ -28,4 +29,14 @@ public interface ObjectToFile<T> {
      */
     public File export(Iterable<T> beans) throws AccessException;
 
+    /**
+     * 解析源文件, 规则文件
+     * 
+     * @param clazz 对象字节码
+     * @param src 源文件
+     * @return 对象列表
+     * @throws AccessException
+     */
+    @Deprecated
+    public List<T> parse(Class<T> clazz, File src) throws AccessException;
 }
