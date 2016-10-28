@@ -1,7 +1,5 @@
 package org.yong.commons.component;
 
-import java.io.File;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +37,9 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
             public String getAttrName() {
                 return "rightAlign";
             }
-        };
+        },
+        /** 补偿占位符 */
+        PLACEHOLDER;
 
         /**
          * 获取配置属性名
@@ -73,25 +73,27 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
 
     }
 
-    private Sizes sizes;
+    private Sizes   sizes;
 
-    private String name;
+    private String  name;
 
-    private String text;
+    private String  text;
 
-    private String suffix;
+    private String  suffix;
 
-    private String prefix;
+    private String  prefix;
 
-    private int size;
+    private int     size;
 
-    private int ordinal;
+    private int     ordinal;
 
-    private String value;
+    private String  value;
 
-    private String formatter;
+    private String  formatter;
 
     private boolean rightAlign;
+
+    private String  placeholder = " ";
 
     /**
      * 获取标题文本, 带前缀和后缀
@@ -254,6 +256,20 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
         this.rightAlign = rightAlign;
     }
 
+    /**
+     * @return the placeholder
+     */
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    /**
+     * @param placeholder the placeholder to set
+     */
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -261,9 +277,9 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
      */
     @Override
     public String toString() {
-        return "AttributeConfigure [name=" + name + ", text=" + text + ", suffix=" + suffix + ", prefix=" + prefix + ", size="
-                + size + ", ordinal=" + ordinal + ", value=" + value + ", formatter=" + formatter + ", rightAlign=" + rightAlign
-                + "]";
+        return "AttributeConfigure [sizes=" + sizes + ", name=" + name + ", text=" + text + ", suffix=" + suffix + ", prefix="
+                + prefix + ", size=" + size + ", ordinal=" + ordinal + ", value=" + value + ", formatter=" + formatter
+                + ", rightAlign=" + rightAlign + ", placeholder=" + placeholder + "]";
     }
 
     /**
@@ -300,16 +316,5 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
     public String getRealValue(String origVal) {
         Sizes currSizes = getSizes();
         return origVal.substring(currSizes.preLen, origVal.length() - currSizes.sufLen);
-    }
-
-    /**
-     * 解析配置文件
-     * 
-     * @param xmlFile 配置文件
-     * @return 属性配置列表
-     */
-    public static List<AttributeConfigure> parseConfig(File xmlFile) {
-        // TODO
-        return null;
     }
 }

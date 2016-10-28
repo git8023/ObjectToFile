@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.yong.commons.component.AttributeConfigure;
@@ -43,15 +43,15 @@ import com.google.common.collect.Maps;
  */
 public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
 
-    private XMLObject root;
+    private XMLObject                       root;
 
-    private final List<AttributeConfigure> CELLS_CONFIG = Lists.newArrayList();
+    private final List<AttributeConfigure>  CELLS_CONFIG = Lists.newArrayList();
 
-    private String exportFilePath;
+    private String                          exportFilePath;
 
-    private File xmlConf;
+    private File                            xmlConf;
 
-    private TextListener<T> listener;
+    private TextListener<T>                 listener;
 
     private static final StringConverterMap converterMap = new StringConverterMap();
     static {

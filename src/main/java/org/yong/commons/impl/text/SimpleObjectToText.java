@@ -160,23 +160,24 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
 
         StringBuilder buffer = new StringBuilder(sVal);
         int offset = size - valLen;
-        CharSequence offsetSpace = createOffsetSpace(offset);
+        CharSequence offsetSpace = createOffsetSpace(offset, conf);
         buffer = conf.isRightAlign() ? buffer.insert(0, offsetSpace) : buffer.append(offsetSpace);
         return buffer.toString();
     }
 
     /**
-     * 创建补偿空白字符
+     * TODO 创建补偿空白字符
      * 
      * @param offset 字符串长度
+     * @param conf 列配置
      * @return 补偿字符串
      */
-    private CharSequence createOffsetSpace(int offset) {
+    private CharSequence createOffsetSpace(int offset, AttributeConfigure conf) {
         if (0 > offset)
             offset = 0;
         StringBuilder buffer = new StringBuilder();
         while (--offset >= 0)
-            buffer.append(" ");
+            buffer.append(conf.getPlaceholder());
         return buffer;
     }
 
