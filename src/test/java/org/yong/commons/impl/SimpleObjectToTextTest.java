@@ -85,7 +85,7 @@ public class SimpleObjectToTextTest {
 
         Random r = new Random();
         for (; size > 0; size--) {
-            TestEntity order = new TestEntity("001", r.nextInt(100), r.nextInt(), new Date(), new Date(),
+            TestEntity order = new TestEntity("中文", r.nextInt(100), r.nextInt(), new Date(), new Date(),
                     "FB-00" + r.nextInt(10), "xxxxxx");
             list.add(order);
         }

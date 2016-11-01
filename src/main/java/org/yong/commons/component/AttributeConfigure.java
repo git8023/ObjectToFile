@@ -267,7 +267,8 @@ public class AttributeConfigure implements Comparable<AttributeConfigure> {
      * @param placeholder the placeholder to set
      */
     public void setPlaceholder(String placeholder) {
-        this.placeholder = placeholder;
+        if (StringUtils.isNotEmpty(placeholder))
+            this.placeholder = placeholder;
     }
 
     /*
