@@ -1,3 +1,6 @@
+/*
+ * github: https://github.com/git8023/ObjectToFile/
+ */
 package org.yong.commons.iface.text;
 
 import java.io.File;

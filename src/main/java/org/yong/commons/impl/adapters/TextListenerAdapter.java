@@ -1,3 +1,6 @@
+/*
+ * github: https://github.com/git8023/ObjectToFile/
+ */
 package org.yong.commons.impl.adapters;
 
 import org.yong.commons.iface.listeners.TextListener;

@@ -1,3 +1,6 @@
+/*
+ * github: https://github.com/git8023/ObjectToFile/
+ */
 package org.yong.commons.component;
 
 import java.io.File;
@@ -19,48 +22,48 @@ import com.google.common.collect.Lists;
  */
 public class TypeConfigure<T> {
     /** 标签名:title */
-    private static final String TAG_NAME_OF_TITLE = "title";
+    private static final String      TAG_NAME_OF_TITLE                = "title";
 
     /** 标签名: conf */
-    private static final String TAG_NAME_OF_CONF = "conf";
+    private static final String      TAG_NAME_OF_CONF                 = "conf";
 
     /** 属性配置: title.包含表头(首行) */
-    private static final String CONF_ATTR_NAME_OF_SHOW_TITLE = "showTitle";
+    private static final String      CONF_ATTR_NAME_OF_SHOW_TITLE     = "showTitle";
 
     /** 属性配置: title.追加的内容 */
-    private static final String CONF_ATTR_NAME_OF_APPEND_CONTENT = "appendContent";
+    private static final String      CONF_ATTR_NAME_OF_APPEND_CONTENT = "appendContent";
 
     /** 属性配置: title.配置对应Java类型 */
-    private static final String CONF_ATTR_NAME_OF_BEAN_CLASS = "beanClass";
+    private static final String      CONF_ATTR_NAME_OF_BEAN_CLASS     = "beanClass";
 
     /** 属性配置: title.name */
-    private static final String TITLE_ATTR_NAME_OF_NAME = "name";
+    private static final String      TITLE_ATTR_NAME_OF_NAME          = "name";
 
     /** 属性配置: title.text */
-    private static final String TITLE_ATTR_NAME_OF_TEXT = "text";
+    private static final String      TITLE_ATTR_NAME_OF_TEXT          = "text";
 
     /** 属性配置: title.prefix */
-    private static final String TITLE_ATTR_NAME_OF_PREFIX = "prefix";
+    private static final String      TITLE_ATTR_NAME_OF_PREFIX        = "prefix";
 
     /** 属性配置: title.suffix */
-    private static final String TITLE_ATTR_NAME_OF_SUFFIX = "suffix";
+    private static final String      TITLE_ATTR_NAME_OF_SUFFIX        = "suffix";
 
     /** 属性配置: title.formatter */
-    private static final String TITLE_ATTR_NAME_OF_FORMATTER = "formatter";
+    private static final String      TITLE_ATTR_NAME_OF_FORMATTER     = "formatter";
 
     /** 属性配置: title.size */
-    private static final String TITLE_ATTR_NAME_OF_SIZE = "size";
+    private static final String      TITLE_ATTR_NAME_OF_SIZE          = "size";
 
     /** 属性配置: title.rightAlign */
-    private static final String TITLE_ATTR_NAME_OF_RIGHT_ALIGN = "rightAlign";
+    private static final String      TITLE_ATTR_NAME_OF_RIGHT_ALIGN   = "rightAlign";
 
-    private Class<T> beanClass;
+    private Class<T>                 beanClass;
 
     private List<AttributeConfigure> attrConfs;
 
-    private boolean showTitle;
+    private boolean                  showTitle;
 
-    private boolean appendContent;
+    private boolean                  appendContent;
 
     /**
      * 获取类型配置构建器

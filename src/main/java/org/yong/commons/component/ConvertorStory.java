@@ -1,3 +1,6 @@
+/*
+ * github: https://github.com/git8023/ObjectToFile/
+ */
 package org.yong.commons.component;
 
 import java.util.Date;
@@ -11,6 +14,7 @@ import org.yong.commons.utils.DateUtil;
  * 
  * @author Huang.Yong
  * @version 0.1
+ * @version 0.10 新增Date-String通用转换器, 通过<i>formater</i>属性指定日期格式化规则
  */
 public abstract class ConvertorStory {
 

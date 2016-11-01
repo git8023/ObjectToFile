@@ -1,3 +1,6 @@
+/*
+ * github: https://github.com/git8023/ObjectToFile/
+ */
 package org.yong.commons.exception;
 
 import java.util.Arrays;
@@ -14,7 +17,7 @@ import com.google.common.collect.Lists;
 public class AccessException extends RuntimeException {
     private static final long serialVersionUID = -7746931882438226261L;
 
-    private List<Object> params = Lists.newArrayList();
+    private List<Object>      params           = Lists.newArrayList();
 
     public AccessException(String message, Throwable cause, Object... params) {
         super();

@@ -1,3 +1,6 @@
+/*
+ * github: https://github.com/git8023/ObjectToFile/
+ */
 package org.yong.commons.impl.text.multi;
 
 import java.io.File;
@@ -27,16 +30,16 @@ import com.google.common.collect.Maps;
  * @version 0.1
  */
 public class MultiObjectToTextImpl implements MultiObjectToText {
-    private final List<TypeConfigure<?>> typesConf;
+    private final List<TypeConfigure<?>>          typesConf;
 
-    private final Map<Class<?>, TypeConfigure<?>> confMaps = Maps.newHashMap();
+    private final Map<Class<?>, TypeConfigure<?>> confMaps       = Maps.newHashMap();
 
-    private static final PropertyUtilsBean PROPERTY_UTILS = BeanUtilsBean2.getInstance().getPropertyUtils();
+    private static final PropertyUtilsBean        PROPERTY_UTILS = BeanUtilsBean2.getInstance().getPropertyUtils();
 
-    private final DataScanner textScanner;
+    private final DataScanner                     textScanner;
 
     /** 未知的文本数据 */
-    private final List<String> UNKONW_DATAS = Lists.newArrayList();
+    private final List<String>                    UNKONW_DATAS   = Lists.newArrayList();
 
     /**
      * @param typesConf 类型配置列表
