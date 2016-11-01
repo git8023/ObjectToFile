@@ -1,7 +1,10 @@
 package org.yong.commons.component;
 
+import java.util.Date;
+
 import org.yong.commons.iface.convertors.PrimerConvertor;
 import org.yong.commons.iface.convertors.StringConvertor;
+import org.yong.commons.utils.DateUtil;
 
 /**
  * 基础数据类型(文本转换器)
@@ -12,6 +15,8 @@ import org.yong.commons.iface.convertors.StringConvertor;
 public abstract class ConvertorStory {
 
     private static final StringConverterMap convertorMap = new StringConverterMap();
+
+    // 基本/包装类型转换器
     static {
         registerPrimerConvertor(Integer.class, int.class);
         registerPrimerConvertor(Short.class, short.class);
@@ -24,14 +29,30 @@ public abstract class ConvertorStory {
         registerPrimerConvertor(String.class, String.class);
     }
 
+    // 注册其他类型转换器
+    static {
+        // 注册通用日期转换器
+        registerConvertor(Date.class, new StringConvertor<Date>() {
+            @Override
+            public String convertString(Date t, AttributeConfigure conf) {
+                return (null == t) ? "" : DateUtil.format(t, conf.getFormatter());
+            }
+
+            @Override
+            public Date convertTarget(String str, AttributeConfigure conf) {
+                return DateUtil.parse(str, conf.getFormatter());
+            }
+        });
+    }
+
     /**
      * 注册转换器
      * 
      * @param beanClass 类型字节码
-     * @param convertor 转换器
+     * @param stringConvertor 转换器
      */
-    public static <T> StringConvertor<T> registerConvertor(Class<T> beanClass, StringConvertor<T> convertor) {
-        return convertorMap.put(beanClass, convertor);
+    public static <T> StringConvertor<T> registerConvertor(Class<T> beanClass, StringConvertor<T> stringConvertor) {
+        return convertorMap.put(beanClass, stringConvertor);
     }
 
     /**
