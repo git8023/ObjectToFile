@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.yong.commons.component.TypeConfigure;
+import org.yong.commons.iface.listeners.ComplexTextListener;
 import org.yong.commons.iface.scanner.DataScanner;
 import org.yong.commons.iface.text.MultiObjectToText;
 import org.yong.commons.utils.file.FileUtil;
@@ -37,9 +38,15 @@ public class MultiObjectToTextTest {
             }
         };
 
-        // 创建多类型文本处理器, 
+        // 创建多类型文本处理器,
         // 需要使用类型配置 和 文本扫描器
         MultiObjectToText multiObjectToText = new MultiObjectToTextImpl(typesConf, textScanner);
+        multiObjectToText.registerListener(new ComplexTextListener() {
+            @Override
+            public void afterFileParsed(File src, Map<Class<?>, List<?>> typeBeans) {
+                System.out.println(typeBeans);
+            }
+        });
 
         // 解析指定文件
         File src = FileUtil.getFileFromClassPath("test.txt");

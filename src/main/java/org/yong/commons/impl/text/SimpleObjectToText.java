@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.yong.commons.component.AttributeConfigure;
 import org.yong.commons.exception.AccessException;
 import org.yong.commons.iface.convertors.StringConvertor;
-import org.yong.commons.iface.listeners.TextListener;
+import org.yong.commons.iface.listeners.SimpleTextListener;
 import org.yong.util.string.StringUtil;
 
 import com.google.common.collect.Maps;
@@ -22,8 +22,8 @@ import com.google.common.collect.Maps;
 /**
  * 简单实现对象文本转换器, 支持监听器实现:
  * <ol>
- * <li>列数据转换前({@link TextListener#beforeColumnConvert})</li>
- * <li>列数据追加前({@link TextListener#beforeColumnAppend})</li>
+ * <li>列数据转换前({@link SimpleTextListener#beforeColumnConvert})</li>
+ * <li>列数据追加前({@link SimpleTextListener#beforeColumnAppend})</li>
  * </ol>
  * 
  * <pre>
@@ -68,7 +68,7 @@ import com.google.common.collect.Maps;
  * @author Huang.Yong
  * @version 0.1
  * @param &lt;T&gt; 实体对象类型
- * @see TextListener
+ * @see SimpleTextListener
  */
 public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
 

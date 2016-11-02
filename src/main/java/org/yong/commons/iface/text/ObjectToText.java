@@ -8,7 +8,7 @@ import java.io.File;
 import org.yong.commons.exception.AccessException;
 import org.yong.commons.iface.ObjectToFile;
 import org.yong.commons.iface.convertors.StringConvertor;
-import org.yong.commons.iface.listeners.TextListener;
+import org.yong.commons.iface.listeners.SimpleTextListener;
 
 /**
  * @author Huang.Yong
@@ -73,6 +73,6 @@ public interface ObjectToText<T> extends ObjectToFile<T> {
      * 
      * @param listener 监听器
      */
-    public void registerListener(TextListener<T> listener);
+    public void registerListener(SimpleTextListener<T> listener);
 
 }

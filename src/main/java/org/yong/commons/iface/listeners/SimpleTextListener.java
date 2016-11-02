@@ -16,7 +16,7 @@ package org.yong.commons.iface.listeners;
  * @version 0.1
  * @param &lt;T&gt; 目标数据类型
  */
-public interface TextListener<T> extends Listener<T> {
+public interface SimpleTextListener<T> extends ConvertorListener {
 
     /**
      * 列数据前置处理

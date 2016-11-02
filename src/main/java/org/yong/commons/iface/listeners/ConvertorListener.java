@@ -9,6 +9,6 @@ package org.yong.commons.iface.listeners;
  * @author Huang.Yong
  * @version 0.1
  */
-public interface Listener<T> {
+public interface ConvertorListener {
 
 }

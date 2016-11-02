@@ -20,7 +20,7 @@ import org.yong.commons.component.StringConverterMap;
 import org.yong.commons.exception.AccessException;
 import org.yong.commons.iface.convertors.PrimerConvertor;
 import org.yong.commons.iface.convertors.StringConvertor;
-import org.yong.commons.iface.listeners.TextListener;
+import org.yong.commons.iface.listeners.SimpleTextListener;
 import org.yong.commons.iface.text.ObjectToText;
 import org.yong.commons.impl.convertors.DateToStringConvertor;
 import org.yong.commons.utils.file.FileUtil;
@@ -34,15 +34,15 @@ import com.google.common.collect.Maps;
 /**
  * 对象转文本文件基础类, 支持监听器实现 : <br>
  * 对象数据转换前置处理(
- * {@link org.yong.commons.iface.listeners.TextListener#beforeBeanConvert}) <br>
+ * {@link org.yong.commons.iface.listeners.SimpleTextListener#beforeBeanConvert}) <br>
  * 行文本追加前置处理(
- * {@link org.yong.commons.iface.listeners.TextListener#beforeRowContentAppend}
+ * {@link org.yong.commons.iface.listeners.SimpleTextListener#beforeRowContentAppend}
  * ),
  * 
  * @author Huang.Yong
  * @version 0.1
  * @param &lt;T&gt; 目标对象类型
- * @see TextListener
+ * @see SimpleTextListener
  */
 public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
 
@@ -54,7 +54,7 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
 
     private File                            xmlConf;
 
-    private TextListener<T>                 listener;
+    private SimpleTextListener<T>                 listener;
 
     private static final StringConverterMap converterMap = new StringConverterMap();
     static {
@@ -302,7 +302,7 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
     }
 
     @Override
-    public void registerListener(TextListener<T> listener) {
+    public void registerListener(SimpleTextListener<T> listener) {
         this.listener = listener;
     }
 

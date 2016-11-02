@@ -16,7 +16,7 @@ import org.yong.commons.utils.DateUtil;
  * @version 0.1
  * @version 0.10 新增Date-String通用转换器, 通过<i>formater</i>属性指定日期格式化规则
  */
-public abstract class ConvertorStory {
+public abstract class ConvertorRepostory {
 
     private static final StringConverterMap convertorMap = new StringConverterMap();
 

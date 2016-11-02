@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.yong.commons.exception.AccessException;
+import org.yong.commons.iface.listeners.ComplexTextListener;
 
 /**
  * 多对象文本处理, 所有接口都会抛出{@link AccessException} <br>
@@ -62,8 +63,10 @@ import org.yong.commons.exception.AccessException;
  * </pre>
  * 
  * @author Huang.Yong
- * @version 0.1
+ * @version 0.1 提供多类型文件解析服务
+ * @version 0.12 新增监听器接口 {@code ComplexTextListener}
  * @see AccessException
+ * @see ComplexTextListener
  */
 public interface MultiObjectToText {
 
@@ -75,4 +78,12 @@ public interface MultiObjectToText {
      * @throws AccessException
      */
     public Map<Class<?>, List<?>> parse(File src) throws AccessException;
+
+    /**
+     * 注册监听器
+     * 
+     * @param complexTextListener 监听器
+     * @return 已注册监听器, 如果没有总是返回null
+     */
+    ComplexTextListener registerListener(ComplexTextListener complexTextListener);
 }

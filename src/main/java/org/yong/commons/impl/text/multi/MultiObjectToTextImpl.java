@@ -13,10 +13,11 @@ import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.yong.commons.component.AttributeConfigure;
-import org.yong.commons.component.ConvertorStory;
+import org.yong.commons.component.ConvertorRepostory;
 import org.yong.commons.component.TypeConfigure;
 import org.yong.commons.exception.AccessException;
 import org.yong.commons.iface.convertors.StringConvertor;
+import org.yong.commons.iface.listeners.ComplexTextListener;
 import org.yong.commons.iface.scanner.DataScanner;
 import org.yong.commons.iface.text.MultiObjectToText;
 
@@ -41,6 +42,9 @@ public class MultiObjectToTextImpl implements MultiObjectToText {
     /** 未知的文本数据 */
     private final List<String>                    UNKONW_DATAS   = Lists.newArrayList();
 
+    /** 监听器 */
+    private ThreadLocal<ComplexTextListener>      localListener  = new ThreadLocal<ComplexTextListener>();
+
     /**
      * @param typesConf 类型配置列表
      * @param textScanner 文本扫描器
@@ -50,6 +54,13 @@ public class MultiObjectToTextImpl implements MultiObjectToText {
         this.typesConf = Lists.newArrayList(typesConf);
         this.textScanner = textScanner;
         mappingConf();
+    }
+
+    @Override
+    public ComplexTextListener registerListener(ComplexTextListener listener) {
+        ComplexTextListener oldListener = localListener.get();
+        localListener.set(listener);
+        return oldListener;
     }
 
     /**
@@ -64,7 +75,13 @@ public class MultiObjectToTextImpl implements MultiObjectToText {
     public Map<Class<?>, List<?>> parse(File src) throws AccessException {
         try {
             Map<Class<?>, List<String>> typeDataMap = parseFile(src);
-            return parseToBeans(typeDataMap);
+            // 新增解析后监听器
+            Map<Class<?>, List<?>> typeBeans = parseToBeans(typeDataMap);
+            ComplexTextListener listener = localListener.get();
+            if (null != listener) {
+                listener.afterFileParsed(src, typeBeans);
+            }
+            return typeBeans;
         } catch (Exception e) {
             throw new AccessException(e);
         }
@@ -180,7 +197,7 @@ public class MultiObjectToTextImpl implements MultiObjectToText {
      */
     private Object parseTextVal(Object bean, String fieldName, String textVal, AttributeConfigure conf) throws Exception {
         Class<?> fieldType = PROPERTY_UTILS.getPropertyType(bean, fieldName);
-        StringConvertor<?> convertor = ConvertorStory.getConvertor(fieldType);
+        StringConvertor<?> convertor = ConvertorRepostory.getConvertor(fieldType);
         if (null != convertor)
             return convertor.convertTarget(textVal, conf);
         return null;
