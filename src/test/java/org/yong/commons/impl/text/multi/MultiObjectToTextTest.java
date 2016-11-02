@@ -7,9 +7,9 @@ import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.yong.commons.component.TypeConfigure;
-import org.yong.commons.iface.listeners.ComplexTextListener;
 import org.yong.commons.iface.scanner.DataScanner;
 import org.yong.commons.iface.text.MultiObjectToText;
+import org.yong.commons.impl.adapters.ComplexTextListenerAdapter;
 import org.yong.commons.utils.file.FileUtil;
 
 import test.entities.TestEntity;
@@ -41,10 +41,14 @@ public class MultiObjectToTextTest {
         // 创建多类型文本处理器,
         // 需要使用类型配置 和 文本扫描器
         MultiObjectToText multiObjectToText = new MultiObjectToTextImpl(typesConf, textScanner);
-        multiObjectToText.registerListener(new ComplexTextListener() {
+        multiObjectToText.registerListener(new ComplexTextListenerAdapter() {
+
             @Override
-            public void afterFileParsed(File src, Map<Class<?>, List<?>> typeBeans) {
-                System.out.println(typeBeans);
+            public <E> boolean beanFilter(String rowContent, Class<E> clazz, E bean) {
+                System.out.println(clazz.getName());
+                System.out.println(bean);
+                System.out.println(rowContent);
+                return false;
             }
         });
 

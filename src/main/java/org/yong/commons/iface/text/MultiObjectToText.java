@@ -64,7 +64,9 @@ import org.yong.commons.iface.listeners.ComplexTextListener;
  * 
  * @author Huang.Yong
  * @version 0.1 提供多类型文件解析服务
- * @version 0.12 新增监听器接口 {@code ComplexTextListener}
+ * @version 0.12 新增监听器接口 {@code ComplexTextListener#afterFileParsed(File, Map)}
+ * @version 0.13 新增监听器接口
+ *          {@code ComplexTextListener#beanFilter(String, Class, Object)}
  * @see AccessException
  * @see ComplexTextListener
  */

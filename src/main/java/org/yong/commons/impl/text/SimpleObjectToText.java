@@ -169,7 +169,7 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
     }
 
     /**
-     * TODO 创建补偿空白字符
+     * 创建补偿空白字符
      * 
      * @param offset 字符串长度
      * @param conf 列配置

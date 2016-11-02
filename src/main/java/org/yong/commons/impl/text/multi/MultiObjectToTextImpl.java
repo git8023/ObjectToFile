@@ -149,6 +149,10 @@ public class MultiObjectToTextImpl implements MultiObjectToText {
 
         for (String textData : textList) {
             E bean = converToBean(beanClass, textData);
+
+            ComplexTextListener listener = this.localListener.get();
+            if (!(null == listener || listener.beanFilter(textData, beanClass, bean)))
+                continue;
             beans.add(bean);
         }
 
