@@ -73,7 +73,7 @@
 
 # 从文本文件中解析(多结构)
 
-  ````java
+  ```java
   // 构建多类型配置
   String multiConfPath = "multi.xml";
   List<TypeConfigure<?>> typesConf = TypeConfigure.builder(multiConfPath).build();
