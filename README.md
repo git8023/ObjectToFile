@@ -47,6 +47,22 @@
   </types>
   ```
 
+  * XML配置说明
+
+  单类型文本(数据文本中仅仅映射到一种Java类型中)
+
+  属性名 | 类型 | 取值范围 | 说明 | 示例
+  --- | --- | --- | --- | ---
+  name | String | ANY | 目标对象属性名 (setter) | name="balance"
+  text | String | ANY | 文本中展示的标头信息, 不需要时可指定`showTitle="false"` | text="账户余额"
+  prefix | String | ANY | 属性值前缀分隔数据 | prefix="["
+  suffix | String | ANY | 属性值后缀分隔数据 | prefix="]"
+  size | Integer | 正整数(大于0) | 当前列值有效文本范围 | size="16"
+  formatter | String | 日期格式化规则, 需遵循Java标准 | formatter="yyyy-MM-dd HH:mm:ss"
+  rightAlign | Boolean | true/false | 文本对齐方式, 默认值:false | rightAlign= "true"
+  placeholder | String | ANY | 如果当前值长度小于`size`指定长度, 将使用`placeholder`占位, 默认值:英文空格 | placeholder="0"
+
+
 # 打印文本文件
 
   ```java
