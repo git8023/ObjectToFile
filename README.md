@@ -1,5 +1,7 @@
 # XML Configuration File
+
   * 通过XML配置设置文本顺序和长度   
+
   ```xml
   <!-- 单结构配置 -->
   <conf showTitle="false" append="false" >
@@ -44,7 +46,9 @@
       </conf >
   </types>
   ```
+
 # 打印文本文件
+
   ```java
     // 获取打印对象
     String exportFilePath = "d:/test.txt";
@@ -66,7 +70,9 @@
     File export = objectToText.export(list);
     System.out.println(export.getAbsolutePath());
     ```
+
 # 从文本文件中解析(多结构)
+
     ````java
     // 构建多类型配置
     String multiConfPath = "multi.xml";
