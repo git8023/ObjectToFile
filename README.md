@@ -54,7 +54,7 @@
 
   * XML配置说明
 
-  单类型文本(数据文本中仅仅映射到一种Java类型中)
+    * 单类型文本(数据文本中仅仅映射到一种Java类型中)
 
   属性名 | 类型 | 取值范围 | 说明 | 示例
   --- | --- | --- | --- | ---
@@ -67,6 +67,11 @@
   rightAlign | Boolean | true/false | 文本对齐方式, 默认值:false | rightAlign= "true"
   placeholder | String | ANY | 如果当前值长度小于`size`指定长度, 将使用`placeholder`占位, 默认值:英文空格 | placeholder="0"
 
+    * 多类型文本(数据文本中包含多种Java类型中)
+
+      * 单类型XML节点: conf - title
+      * 多类型XML节点: types - conf - title
+    
 
   # 打印文本文件
 
@@ -122,16 +127,9 @@
   }
   ```
 
-  # API接口树
-  
-    +---- ObjectToFile      
-      |   
-      +---- ObjectToText\<T\>     
-        |   
-        +---- ObjectToTextAbstract\<T\>     
-          |   
-          +---- SimpleObjectToText\<\T\>     
-  
+  # API 
+
+    请参阅项目中javadoc文档`/doc/index.html`
 
 # Excel文件互转
 
