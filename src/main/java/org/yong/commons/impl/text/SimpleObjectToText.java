@@ -111,7 +111,7 @@ public class SimpleObjectToText<T> extends ObjectToTextAbstract<T> {
             try {
                 Object propVal = propertyUtils.getProperty(bean, name);
                 // 列数据转换前
-                propVal = beforeColumnConvert(name, propVal, conf.getOrdinal());
+                propVal = beforeColumnConvert(name, propVal, conf.getOrdinal(), bean);
                 val = valueToString(propVal, conf);
             } catch (Exception ignore) {
                 ignore.printStackTrace();

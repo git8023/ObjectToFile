@@ -34,7 +34,8 @@ import com.google.common.collect.Maps;
 /**
  * 对象转文本文件基础类, 支持监听器实现 : <br>
  * 对象数据转换前置处理(
- * {@link org.yong.commons.iface.listeners.SimpleTextListener#beforeBeanConvert}) <br>
+ * {@link org.yong.commons.iface.listeners.SimpleTextListener#beforeBeanConvert}
+ * ) <br>
  * 行文本追加前置处理(
  * {@link org.yong.commons.iface.listeners.SimpleTextListener#beforeRowContentAppend}
  * ),
@@ -54,7 +55,7 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
 
     private File                            xmlConf;
 
-    private SimpleTextListener<T>                 listener;
+    private SimpleTextListener<T>           listener;
 
     private static final StringConverterMap converterMap = new StringConverterMap();
     static {
@@ -312,11 +313,14 @@ public abstract class ObjectToTextAbstract<T> implements ObjectToText<T> {
      * @param name 属性名
      * @param propVal 列值
      * @param ordinal 配置中的序列
+     * @param bean
      * @return 处理后列值
      */
-    protected Object beforeColumnConvert(String name, Object propVal, int ordinal) {
-        if (null != this.listener)
+    protected Object beforeColumnConvert(String name, Object propVal, int ordinal, T bean) {
+        if (null != this.listener) {
+            this.listener.setBean(bean);
             return this.listener.beforeColumnConvert(name, propVal, ordinal);
+        }
         return propVal;
     }
 

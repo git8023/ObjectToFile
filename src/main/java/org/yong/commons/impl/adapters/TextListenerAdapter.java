@@ -13,6 +13,8 @@ import org.yong.commons.iface.listeners.SimpleTextListener;
  */
 public class TextListenerAdapter<T> implements SimpleTextListener<T> {
 
+    private T bean;
+
     @Override
     public Object beforeColumnConvert(String name, Object propVal, int ordinal) {
         return propVal;
@@ -35,5 +37,15 @@ public class TextListenerAdapter<T> implements SimpleTextListener<T> {
     @Override
     public boolean afterTextConverted(T bean, String textData) {
         return true;
+    }
+
+    @Override
+    public void setBean(T bean) {
+        this.bean = bean;
+    }
+
+    @Override
+    public T getBean() {
+        return this.bean;
     }
 }

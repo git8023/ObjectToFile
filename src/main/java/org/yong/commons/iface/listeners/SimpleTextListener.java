@@ -19,6 +19,19 @@ package org.yong.commons.iface.listeners;
 public interface SimpleTextListener<T> extends ConvertorListener {
 
     /**
+     * 设置数据对象
+     * @param bean
+     * @return
+     */
+    public void setBean(T bean);
+
+    /**
+     * 获取数据对象
+     * @return
+     */
+    public T getBean();
+
+    /**
      * 列数据前置处理
      * 
      * @param name 属性名
